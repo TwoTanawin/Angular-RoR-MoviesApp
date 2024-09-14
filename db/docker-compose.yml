@@ -1,0 +1,33 @@
+services:
+  movie_db:
+    image: postgres:latest
+    container_name: movie_db
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=password
+    ports:
+      - "5433:5432"
+    networks:
+      - movie_network
+
+  movie_pgadmin:
+    image: dpage/pgadmin4
+    container_name: movie_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8081:80"
+    depends_on:
+      - movie_db
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - movie_network
+
+volumes:
+  pgadmin_data:
+
+networks:
+  movie_network:
+    external: true

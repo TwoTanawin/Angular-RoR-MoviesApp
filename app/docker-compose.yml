@@ -1,0 +1,18 @@
+services:
+  movie_web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: movie_web
+    image: movie_web:0.2
+    command: bash -c "bundle exec rake db:create && bundle exec rake db:migrate && ./bin/rails server -b 0.0.0.0 -p 3000"
+    ports:
+      - "3000:3000"
+    networks:
+      - movie_network
+    volumes:
+      - ./:/rails
+
+networks:
+  movie_network:
+    external: true
